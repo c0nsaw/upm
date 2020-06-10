@@ -97,7 +97,7 @@
       echo json_encode( array('success' => true, 'folder_id' => $folder_id, 'message' => 'Successfully updated folder config'));
       break;
       //ToDo
-    case "get_globalCa_config": 
+    case "get_global_config": 
       UPM::getGlobalConfig( $config );
       echo json_encode( array('success' => true, 'config' => $config) );
       break;

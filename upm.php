@@ -76,7 +76,7 @@
         (SELECT COUNT(*) FROM upm_folder_folder AS B WHERE F.folder_id = B.folder_parent_id) AS has_childs 
         FROM upm_folder AS F WHERE F.folder_id NOT IN (SELECT folder_child_id FROM upm_folder_folder) ORDER BY parent, child;
         ");
-        $folders = array();
+        $folders = [];
         foreach($results as $row) {
           array_push($folders, $row);
         }
