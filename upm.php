@@ -84,7 +84,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("");
+        throw new Exception(array('success' => false));
         return false;
       }
     }
@@ -99,7 +99,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("");
+        throw new Exception(array('success' => false));
         return false;
       }
     }
@@ -110,14 +110,14 @@
         $server_id = DB::insertId();
         if ( $folder_id != null ) {
           if( !UPM::moveServer($server_id, $folder_id) )
-            throw new Exception("Error while adding Host");
+
             return -1;
         }
         return $server_id;
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while adding Host");
+        throw new Exception(array('success' => false, 'message' => "Error while adding host: "));
         return -1;
       }
   	}
@@ -132,7 +132,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while moving Host");
+        throw new Exception(array('success' => false, 'message' => "Error while moving host"));
         return false;
       }
 	  }
@@ -147,7 +147,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error: Can't open Database");
+        throw new Exception(array('success' => false, 'message' => "Can't open database!"));
         return -1;
       }
     }
@@ -165,7 +165,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while moving folder.");
+        throw new Exception(array('success' => false, 'message' => "Error while moving folder: "));
         return false;
       }
     }
@@ -191,7 +191,7 @@
 
       $dataindex = 0;
       if( !UPM::recursiveImport(0, $data, $dataindex, 0) )
-        throw new Exception("Error while mass importing!");
+        throw new Exception(array('success' => false, 'message' => "Error while Importing: "));
         return false;
       return true;
     }
@@ -254,7 +254,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while deleting Important-Updates!");
+        throw new Exception(array('success' => false, 'server_id' => $server_id ));
         return false;
       }
     }
@@ -265,7 +265,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while deleting Updates!");
+        throw new Exception(array('success' => false, 'server_id' => $server_id ));
         return false;
       }
     }
@@ -276,7 +276,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while deleting Host!");
+        throw new Exception(array('success' => false, 'message' => "Error while deleting host"));
         return false;
       }
     }
@@ -295,7 +295,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while deleting Host!");
+        throw new Exception(array('success' => false, 'message' => "Error while deleting host"));
         return false;
       }
     }
@@ -307,7 +307,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while deleting Folder");        
+        throw new Exception(array('success' => false, 'message' => "error while deleting folder!"));        
         return false;
       }
     }
@@ -318,13 +318,14 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
+        throw new Exception(array('success' => false, 'message' => "error while deleting folder!"));   
         return false;
       }
     }
     public static function deleteFolder($folder_id) {
       if( $folder_id == 0 ) {
         error_log("Can't delete Root folder!");
-        throw new Exception("Error while deleting folder");
+        throw new Exception(array('success' => false, 'message' => "Can't delete Root folder!"));   
         return false;
       }
       if( !UPM::deleteFolderFromFolderServer( $folder_id) )
@@ -338,7 +339,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while deleting folder");
+        throw new Exception(array('success' => false, 'message' => "error while deleting folder!"));   
         return false;
       }
 
@@ -377,7 +378,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception('Error while getting server information' . $server_id);
+        throw new Exception(array('success' => false, "server_id" => $server_id, 'message' => "error while getting server information"));
         return false;
       }
     }
@@ -388,7 +389,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception('Error while getting folder information' . $folder_id);
+        throw new Exception(array('success' => false, "folder_id" => $folder_id, 'message' => "error while getting folder information"));
         return false;
       }
     }
@@ -411,7 +412,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while updating host config");
+        throw new Exception(array('success' => false, 'message' => "error while updating host config!"));
         return false;
       }
     }
@@ -432,7 +433,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while updating folder config");
+        throw new Exception(array('success' => false, 'message' => "Error while updating folder config!"));
         return false;
       }
     }
@@ -443,7 +444,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while getting distribution config!");        
+        throw new Exception(array('success' => false));        
         return false;
       }
     }
@@ -458,7 +459,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while getting distribution Overview!");
+        throw new Exception(array('success' => false));
         return false;
       }
     }
@@ -479,7 +480,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while adding distribution config!");
+        throw new Exception(array('success' => false, 'message' => "Error while adding distribution config"));
         return false;
       }
     }
@@ -500,7 +501,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while updating distribution config!");
+        throw new Exception(array('success' => false, 'message' => "Error while updating distribution config"));
         return false;
       }
     }
@@ -512,7 +513,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while deleting distribution config!");
+        throw new Exception(array('success' => false, 'message' => "Error while updating global config"));
         return false;
       }
     }
@@ -544,7 +545,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while getting EOL overview");
+        throw new Exception(array('success' => false));
         
         return false;
       }
@@ -556,7 +557,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while getting EOL config");
+        throw new Exception(array('success' => false));
         return false;
       }
     }
@@ -569,7 +570,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while adding EOL config");
+        throw new Exception(array('success' => false, 'message' => "Error while adding eol config"));
         
         return false;
       }
@@ -584,7 +585,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while updating EOL config");
+        throw new Exception(array('success' => false, 'message' => "Error while deleting eol config"));
         return false;
       }
     }
@@ -596,7 +597,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while deleting EOL config");
+        throw new Exception(array('success' => false, 'message' => "Error while deleting eol config"));
         return false;
       }
     }
@@ -627,7 +628,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while getting server output");
+        throw new Exception(array('success' => false,'server_id' => $server_id, 'message' => "Error while getting host output"));
         return false;
       }
     }
@@ -640,7 +641,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while adding important update! ServerID:" .$server_id);
+        throw new Exception(array('success' => false, 'server_id' => $server_id ));
         return false;
       }
     }
@@ -654,7 +655,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while updating important update. ServerID:" . $server_id);        
+        throw new Exception(array('success' => false, 'server_id' => $server_id ));        
         return false;
       }
 
@@ -667,7 +668,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while deleting important update. ServerID:" . $server_id . "Server" .$serverinfo);
+        throw new Exception(array('success' => false, 'server_id' => $server_id ));
         return false;
       }
     }
@@ -693,7 +694,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while updating global config!");
+        throw new Exception(array('success' => false, 'message' => "Error while updating global config"));
         return false;
       }
 
@@ -730,7 +731,7 @@
         //error_log( "hostname: $ssh_hostname reuse - $command_ret" );
         if( $command_exit_code != 0 ) {
           $error = "Error! executing command: $command return: $command_ret";
-          throw new Exception($error);
+          throw new Exception(array('success' => false, 'server_id' => $server_id, 'message' => "Error while running ssh-command"));
           return false;
         } else {
           return true;
@@ -802,13 +803,13 @@
       if( !UPM::getServerDistribution($server_id, $distri, $distri_version) ) {
         if( !UPM::serverDetectDistribution($server_id, $distri, $distri_version, $error2) ) {
           $error = "Can't detect distribution: " . $error2;
-          throw new Exception("Can't detect distribution!". $server_id);          
+          throw new Exception(array('success' => false, 'server_id' => $server_id, 'message' => $error));          
           return false;
         }
       }
       if( !UPM::getDistributionCommand($distri, $distri_version, $commandname, $cmd) ) {
         $error = "No command for $commandname specified for distribution " . $distri . " " . $distri_version;
-        throw new Exception("$error, host: $server_id");
+        throw new Exception(array('success' => false, 'server_id' => $server_id, 'message' => $error));
         return false;
       }
       return UPM::serverRunCommand($server_id, $cmd, $command_ret, $error);
@@ -816,7 +817,7 @@
     public static function serverRunCommand($server_id, $command, &$command_ret, &$error) {
       if( !UPM::getServerInfo($server_id, $server) ) {
         $error = "Can't receive server!";
-        throw new Exception("$error, host: $server_id");
+        throw new Exception(array('success' => false, 'server_id' => $server_id, 'message' => $error));
         return false;
       }
       $folder_id = UPM::getFolderIdFromServer( $server_id );
@@ -824,7 +825,7 @@
       if( $folder_id >= 0 ) {
         if( !UPM::getFolderInfo($folder_id, $folder) ) {
           $error = "Can't receive folder!";
-          throw new Exception("$error, host: $server_id");
+          throw new Exception(array('success' => false, 'server_id' => $server_id, 'message' => $error));
           return false;
         }
       }
@@ -1059,7 +1060,7 @@
       if( $update_list_str == "" ) {
         if( !UPM::serverClearUpdates($server_id) ) {
           $error = "Error while clearing server updates";
-          throw new Exception("$error , Server: $server_id");
+          throw new Exception(array('success' => false, 'server_id' => $server_id, 'message' => $error));
           return false;
         }
       } else {
@@ -1067,13 +1068,13 @@
         foreach( $update_list as &$value) {
           if( ! UPM::addServerUpdate($server_id, $value) ) {
             $error = "Error while adding server update to table!";
-            throw new Exception("$error , Server: $server_id");
+            throw new Exception(array('success' => false, 'server_id' => $server_id, 'message' => $error));
             return false;
           }
         }
         if( !UPM::serverDeleteOldUpdates($server_id, $update_list) ) {
           $error = "Error while deleting old server updates in table!";
-          throw new Exception("$error , Server: $server_id");
+          throw new Exception(array('success' => false, 'server_id' => $server_id, 'message' => $error));
           return false;
         }
         unset($value);
@@ -1090,12 +1091,12 @@
       if( ! UPM::updateServerInfo($server_id, $uptime, $restart_required,
         $distribution, $distribution_version, $EOL, $sheduled_restart, $inventory_time) ) {
         $error = "Error while updating host info in table";
-        throw new Exception($error);
+        throw new Exception(array('success' => false, 'server_id' => $server_id, 'message' => $error));
         return false;
       }
       if( !UPM::getServerInfo($server_id, $serverinfo)) {
         $error = "Error while getting host info from table!";
-        throw new Exception($error);
+        throw new Exception(array('success' => false, 'server_id' => $server_id, 'message' => $error));
         return false;
       }
       return true;
@@ -1109,13 +1110,13 @@
           if( !UPM::getServerDistribution($server_id, $distri, $distri_version) ) {
             if( !UPM::serverDetectDistribution($server_id, $distri, $distri_version, $error2) ) {
               $error = "Can't detect distribution: " . $error2;
-              throw new Exception($error);
+              throw new Exception(array('success' => false, 'message' =>$error));
               return false;
             }
           }
           if( !UPM::getDistributionCommand($distri, $distri_version, CommandNames::PatchChangelog, $cmd) ) {
             $error = "No command for $commandname specified for distribution " . $distri . " " . $distri_version;
-            throw new Exception($error);
+            throw new Exception(array('success' => false, 'message' =>$error));
             return false;
           }
           $cmdReplaced = str_replace('${PackageName}', $package, $cmd);
@@ -1128,7 +1129,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while getting package changelog!");
+        throw new Exception(array('success' => false, 'message' => "Can't get package changelog"));
         return false;
       }
     }
@@ -1141,13 +1142,13 @@
           if( !UPM::getServerDistribution($server_id, $distri, $distri_version) ) {
             if( !UPM::serverDetectDistribution($server_id, $distri, $distri_version, $error2) ) {
               $error = "Can't detect distribution: " . $error2;
-              throw new Exception($error);
+              throw new Exception(array('success' => false, 'message' => $error));
               return false;
             }
           }
           if( !UPM::getDistributionCommand($distri, $distri_version, CommandNames::PatchInfo, $cmd) ) {
             $error = "No command for $commandname specified for distribution " . $distri . " " . $distri_version;
-            throw new Exception($error);
+            throw new Exception(array('success' => false, 'message' => $error));
             return false;
           }
           $cmdReplaced = str_replace('${PackageName}', $package, $cmd);
@@ -1160,7 +1161,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while getting package information!");
+        throw new Exception(array('success' => false, 'message' => "Can't get package info"));
         return false;
       }
     }
@@ -1171,13 +1172,13 @@
         if( !UPM::getServerDistribution($server_id, $distri, $distri_version) ) {
           if( !UPM::serverDetectDistribution($server_id, $distri, $distri_version, $error2) ) {
             $error = "Can't detect distribution: " . $error2;
-            throw new Exception($error);
+            throw new Exception(array('success' => false, 'message' => $error));
             return false;
           }
         }
         if( !UPM::getDistributionCommand($distri, $distri_version, CommandNames::UpdatePackage, $cmd) ) {
           $error = "No command for $commandname specified for distribution " . $distri . " " . $distri_version;
-          throw new Exception($error);
+          throw new Exception(array('success' => false, 'message' => $error));
           return false;
         }
         $cmdReplaced = str_replace('${PackageName}', $package, $cmd);
@@ -1192,7 +1193,6 @@
         if( $update_list_str == "" ) {
           if( !UPM::serverClearUpdates($server_id) ) {
             $error = "Error while clearing server updates";
-            throw new Exception($error);
             return false;
           }
         } else {
@@ -1200,13 +1200,12 @@
           foreach( $update_list as &$value) {
             if( ! UPM::addServerUpdate($server_id, $value) ) {
               $error = "Error while adding server update to table!";
-              throw new Exception($error);
+              throw new Exception(array('success' => false, 'message' => "Error updating package"));
               return false;
             }
           }
           if( !UPM::serverDeleteOldUpdates($server_id, $update_list) ) {
             $error = "Error while deleting old server updates in table!";
-            throw new Exception($error);
             return false;
           }
           unset($value);
@@ -1217,7 +1216,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while updating package!");
+        throw new Exception(array('success' => false, 'message' => "Error updating package"));
         return false;
       }
     }
@@ -1229,7 +1228,7 @@
         }
         if( !UPM::serverClearUpdates($server_id) ) {
           $error = "Error while clearing server updates";
-          throw new Exception("$error , host: $server_id");
+          throw new Exception(array('success' => false, 'server_id' => $server_id, 'message' => "Error while clearing updates"));
           return false;
         }
         DB::update("upm_server", array('last_updated' => $update_time), "server_id=%d", $server_id);
@@ -1239,7 +1238,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while updating host!");
+        throw new Exception(array('success' => false, 'server_id' => $server_id, 'message' => "Error while update host"));
         return false;
       }
     }
@@ -1248,13 +1247,11 @@
         if( !UPM::getServerDistribution($server_id, $distri, $distri_version) ) {
           if( !UPM::serverDetectDistribution($server_id, $distri, $distri_version, $error2) ) {
             $error = "Can't detect distribution: " . $error2;
-            throw new Exception("$error , host: $server_id");
             return false;
           }
         }
         if( !UPM::getDistributionCommand($distri, $distri_version, CommandNames::RebootSet, $cmd) ) {
           $error = "No command for $commandname specified for distribution " . $distri . " " . $distri_version;
-          throw new Exception("$error , host: $server_id");
           return false;
         }
         $dt = new DateTime();
@@ -1288,7 +1285,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while adding scheduled reboot");
+        throw new Exception(array('success' => false, 'server_id' => $server_id, 'message' => "Error while set shedule reboot"));
         return false;
       }
     }
@@ -1297,13 +1294,11 @@
         if( !UPM::getServerDistribution($server_id, $distri, $distri_version) ) {
           if( !UPM::serverDetectDistribution($server_id, $distri, $distri_version, $error2) ) {
             $error = "Can't detect distribution: " . $error2;
-            throw new Exception("$error , host: $server_id");
             return false;
           }
         }
         if( !UPM::getDistributionCommand($distri, $distri_version, CommandNames::RebootSet, $cmd) ) {
           $error = "No command for $commandname specified for distribution " . $distri . " " . $distri_version;
-          throw new Exception("$error , host: $server_id");
           return false;
         }
         if( !UPM::serverRunCommandName($server_id, CommandNames::RebootDel, $output, $error) ) {
@@ -1316,7 +1311,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Error while deleting scheduled reboot! Server: $server_id");
+        throw new Exception(array('success' => false, 'server_id' => $server_id, 'message' => "Error while delete shedule reboot"));
         return false;
       }
     }
@@ -1327,7 +1322,7 @@
       } catch(MeekroDBException $e) {
         error_log( "DB error " . $e->getMessage() );
         error_log( $e->getQuery() );
-        throw new Exception("Can't get the Global Config!");
+        throw new Exception(array('success' => false, 'message' => "Can't get global config"));
         return false;
       }
     }
