@@ -280,7 +280,7 @@
       break;
   }
   } catch(Exception $ex) {
-    echo 'Caught Exception: ', $ex->getMessage(), "\n";
+    echo json_encode( array('sucess' => false, 'message' => $ex->getMessage()));
   }
 
   return true;

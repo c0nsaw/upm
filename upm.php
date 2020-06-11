@@ -1265,6 +1265,7 @@
         $hh =   $dt->format('H');
         $mm =   $dt->format('i');
 
+  
         $cmd = str_replace('${YYYY}', $YYYY, $cmd);
         $cmd = str_replace('${MM}', $MM, $cmd);
         $cmd = str_replace('${DD}', $DD, $cmd);
